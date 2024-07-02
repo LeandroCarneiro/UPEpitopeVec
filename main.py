@@ -44,7 +44,6 @@ history = model.fit(np.array(X_train), np.array(y_train), epochs=100,
 test_loss, test_acc = model.evaluate(np.array(X_test), np.array(y_test))
 print(f'Test accuracy: {test_acc}')
 
-print(np.array(ep_test).shape)
 
 prediction = model.predict(np.array(allSequences_eval))
 y_pred = (prediction > 0.5).astype(int)
