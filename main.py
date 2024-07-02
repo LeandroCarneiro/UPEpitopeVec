@@ -23,12 +23,14 @@ allSequences = embedding_epitopes(epitopes['PEPTIDE'].values, aminoacids, 30)
 X_train, X_test, y_train, y_test = train_test_split(
     allSequences, y, test_size=0.3)
 
-model = build_model(64, 17)
+model = build_model(30, 17, 64)
 model.summary()
+
+print(np.array(X_train).shape)
 
 history = model.fit(np.array(X_train), np.array(y_train), epochs=10,
                     batch_size=32, validation_split=0.2)
 
 print(history)
-test_loss, test_acc = model.evaluate(X_test, y_test)
+test_loss, test_acc = model.evaluate(np.array(X_test), np.array(y_test))
 print(f'Test accuracy: {test_acc}')
