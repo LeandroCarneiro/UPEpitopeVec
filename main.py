@@ -14,16 +14,21 @@ aminoacids = GetAllAminoacids()
 # for i in range(len(aminoacids)):
 #     print(f"{aminoacids[i].letter}: {aminoacids[i].embedding}")
 
-epitopes = epitope_dataset()
-epitopes.head()
+epitopes_train, epitopes_eval = epitope_dataset()
+epitopes_train.head()
 
 labelencoder = LabelEncoder()
-y = labelencoder.fit_transform(epitopes['FLAG'])
+y_train = labelencoder.fit_transform(epitopes_train['FLAG'])
+y_eval = labelencoder.fit_transform(epitopes_eval['FLAG'])
 
-allSequences = embedding_epitopes(epitopes['PEPTIDE'].values, aminoacids, 30)
+allSequences_train = embedding_epitopes(
+    epitopes_train['PEPTIDE'].values, aminoacids, 30)
+
+allSequences_eval = embedding_epitopes(
+    epitopes_eval['PEPTIDE'].values, aminoacids, 30)
 
 X_train, X_test, y_train, y_test = train_test_split(
-    allSequences, y, test_size=0.3)
+    allSequences_train, y_train, test_size=0.3)
 
 print(len(X_train))
 model = build_model(len(X_train), 17, 64)
@@ -39,17 +44,12 @@ history = model.fit(np.array(X_train), np.array(y_train), epochs=100,
 test_loss, test_acc = model.evaluate(np.array(X_test), np.array(y_test))
 print(f'Test accuracy: {test_acc}')
 
-ep_test = embedding_epitopes(['QTGNVYSLEAIEELNLKPGHLKD', 'ETVDELNAAHYSQGR',
-                             'AATNAACAWLEAQEEE', 'GYVGAEFPLDITAGTE', 'GAAQEALEAYAAAERS', 'IKHQGLPQGVLNENLLRFFV', 'APFPEVFGKEKVNELSTDIG', 'SESTEDQAMEDIKQMEAE'], aminoacids, 30)
-# pos, pos, pos, pos
-# pos, neg, neg, neg
-
 print(np.array(ep_test).shape)
 
-prediction = model.predict(np.array(X_test))
+prediction = model.predict(np.array(allSequences_eval))
 y_pred = (prediction > 0.5).astype(int)
 
-cm = confusion_matrix(y_test, y_pred)
+cm = confusion_matrix(y_eval, y_pred)
 
 # Plotting accuracy
 sns.heatmap(cm, annot=True, fmt="d")
@@ -57,6 +57,7 @@ plt.xlabel('Predicted')
 plt.ylabel('True')
 plt.title('Confusion Matrix')
 plt.show()
+print("finished")
 
 # # Plotting accuracy
 # plt.figure(figsize=(12, 8))
