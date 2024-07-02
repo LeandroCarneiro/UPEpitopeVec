@@ -3,7 +3,7 @@ import pandas as pd
 
 def epitope_dataset():
     # Specify the path to your CSV file
-    file_path = './datasets/bepi3_epitopes_test.csv'
+    file_path = './datasets/bepi3_epitopes.csv'
     df = pd.read_csv(file_path)
 
     # print(df)

@@ -5,7 +5,7 @@ from keras.layers import Dense, LSTM
 def build_model(length_array, num_features, num_units):
     model = Sequential([
         LSTM(units=num_units, input_shape=(length_array, num_features)),
-        Dense(units=1, activation='softmax')
+        Dense(1, activation='sigmoid')
     ])
     model.compile(optimizer='adam', loss='binary_crossentropy',
                   metrics=['accuracy'])
@@ -13,5 +13,5 @@ def build_model(length_array, num_features, num_units):
     return model
 
 
-model = build_model(30, 17, 64)
-model.summary()
+# model = build_model(30, 17, 64)
+# model.summary()
