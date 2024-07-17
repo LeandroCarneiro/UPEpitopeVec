@@ -1,16 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.calibration import LabelEncoder
+import seaborn as sns
 
 from helpers.epitope_classifier import epitope_dataset
 from helpers.epitope_encoder import embedding_epitopes
-from models.LeoModelsBuilder import build_GRU_model, build_LSTM_model, build_RNN_model
-from helpers.DatasetReader import GetAllAminoacids
+from helpers.DatasetReader import GetAllAminoacids, GetAllAminoAciddsHibridModel
+from models.LeoModelsBuilder import build_GRU_model, build_LSTM_model, build_RNN_model, build_MLP_model
+
+from sklearn.calibration import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, roc_curve, auc
-import seaborn as sns
+from itertools import combinations
+from sklearn.model_selection import cross_val_score
 
-aminoacids = GetAllAminoacids()
+
+aminoacids = GetAllAminoacids(isHybrid=False)
 # for i in range(len(aminoacids)):
 #     print(f"{aminoacids[i].letter}: {aminoacids[i].embedding}")
 
@@ -30,12 +34,16 @@ allSequences_eval = embedding_epitopes(
 X_train, X_test, y_train, y_test = train_test_split(
     allSequences_train, y_train, test_size=0.3)
 
-# model = build_LSTM_model(len(X_train), 17, 30)
-model = build_RNN_model(len(X_train), 17, 30)
-# model = build_GRU_model(len(X_train), 17, 30)
+# model = build_LSTM_model(len(X_train), len(aminoacids[0].embedding), 64)
+model = build_RNN_model(len(X_train), len(aminoacids[0].embedding), 64)
+# model = build_MLP_model(len(X_train), len(aminoacids[0].embedding), 64)
+# model = build_GRU_model(len(X_train), len(aminoacids[0].embedding), 64)
+
 model.summary()
 
-history = model.fit(np.array(X_train), np.array(y_train), epochs=100,
+print(np.array(X_train).shape)
+
+history = model.fit(np.array(X_train), np.array(y_train), verbose=True, epochs=150,
                     batch_size=len(X_train), validation_split=0.3)
 
 # print(history)
@@ -110,3 +118,5 @@ plt.show()
 # plt.show()
 
 # kfold
+# NEGATIVE:[a-z]{5,}([a-z]{10,10})[a-z]{5,}
+# POSITIVE:[a-z]{1,}([A-Z]{10,10})[a-z]{1,}

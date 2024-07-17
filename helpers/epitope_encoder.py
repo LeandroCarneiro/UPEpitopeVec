@@ -3,6 +3,24 @@ from classes.AminoAcid import AminoAcid
 import numpy as np
 
 
+def encode_epitope(epitope: str, allAminoacids: List[AminoAcid]):
+    enconded_features = [
+        allAminoacids[allAminoacids.index(aa)].onehot_encode for aa in epitope]
+
+    return enconded_features
+
+
+def encode_epitopes(epitopes: [], allAminoacids: List[AminoAcid], limit_length):
+    embeddings = []
+   
+    for e in epitopes:
+        padX = (limit_length-len(e))
+        e = f"{e}{'X' * padX}"
+        embeddings.append(encode_epitope(e, allAminoacids))
+
+    return embeddings
+
+
 def embedding_epitope(epitope: str, allAminoacids: List[AminoAcid]):
     enconded_features = [
         allAminoacids[allAminoacids.index(aa)].embedding for aa in epitope]

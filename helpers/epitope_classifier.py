@@ -22,7 +22,8 @@ def perform_k_fold_cross_validation(allSequences_train, y_train, n_splits, model
     # Iterate over folds
     for train_index, val_index in kf.split(allSequences_train):
         # Split datasets
-        X_train_fold, X_val_fold = allSequences_train[train_index], allSequences_train[val_index]
+        X_train_fold, X_val_fold = allSequences_train[:
+                                                      train_index], allSequences_train[:val_index]
         y_train_fold, y_val_fold = y_train[train_index], y_train[val_index]
 
         # Train your model here (example: Logistic Regression)
