@@ -34,7 +34,7 @@ def GetAllAminoacids(isHybrid: bool):
 
 def embed_aminoacids(allAminoacids: List[AminoAcid], isHybrid: bool):
     if isHybrid:
-        model = load_model('leo_enbedder_model.h5')
+        model = load_model('leo_enbedder_model_new.h5')
         weights = model.get_weights()[0]
 
         for aa in allAminoacids:

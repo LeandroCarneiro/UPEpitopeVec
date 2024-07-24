@@ -3,12 +3,14 @@ import matplotlib.pyplot as plt
 
 from helpers.DatasetReader import GetAllAminoacids
 from helpers.epitope_classifier import epitope_dataset
+from helpers.distance_calculator import calculate_distance, plot_heatmap
 from models.LeoModelsBuilder import build_MLP_embedder
+
 epitopes_train, epitopes_eval = epitope_dataset()
-aminoacids = GetAllAminoacids()
+aminoacids = GetAllAminoacids(False)
 # print(aminoacids)
 
-sequences = epitopes_train['PEPTIDE'].values
+sequences = epitopes_eval['PEPTIDE'].values
 
 bigrams = []
 for words_list in sequences:
@@ -46,7 +48,7 @@ Y = np.array(Y)
 
 model = build_MLP_embedder(Y.shape[1], len(aminoacids))
 model.summary()
-model.fit(X, Y, epochs=1, batch_size=len(sequences), verbose=True)
+model.fit(X, Y, epochs=1000, batch_size=len(sequences), verbose=True)
 
 # print(X[0], ': ', Y[0])
 
@@ -56,7 +58,7 @@ word_embeddings = {}
 for word in all_words:
     word_embeddings[word] = weights[words_dict[word]]
 
-print(word_embeddings)
+# print(word_embeddings)
 
 
 # plt.figure(figsize = (10, 10))
@@ -65,5 +67,10 @@ for word in list(words_dict.keys()):
     plt.scatter(coord[0], coord[1])
     plt.annotate(word, (coord[0], coord[1]))
 
+calculate_distance(aminoacids)
+# plot_heatmap()
+
 plt.show()
+plt.savefig('plot_len.10.png')
 # model.save('leo_enbedder_model.h5')
+model.save('leo_enbedder_model_new.h5')
