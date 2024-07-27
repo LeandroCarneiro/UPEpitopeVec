@@ -2,7 +2,7 @@
 from sklearn.calibration import LabelEncoder
 from sklearn.model_selection import train_test_split
 from helpers.DatasetReader import GetAllAminoacids
-from helpers.epitope_classifier import epitope_dataset, perform_k_fold_cross_validation
+from helpers.epitope_classifier import GetEpitopeDataset, perform_k_fold_cross_validation
 from helpers.epitope_encoder import embedding_epitopes, encode_epitope
 from models.LeoModelsBuilder import build_LSTM_model
 from keras.models import load_model

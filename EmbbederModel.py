@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from helpers.DatasetReader import GetAllAminoacids
-from helpers.epitope_classifier import epitope_dataset
+from helpers.epitope_classifier import GetEpitopeDataset
 from helpers.distance_calculator import calculate_distance, plot_heatmap
 from models.LeoModelsBuilder import build_MLP_embedder
 
-epitopes_train, epitopes_eval = epitope_dataset()
+epitopes_train, epitopes_eval = GetEpitopeDataset()
 aminoacids = GetAllAminoacids(False)
 # print(aminoacids)
 

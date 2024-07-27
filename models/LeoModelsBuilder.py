@@ -1,13 +1,15 @@
 from keras.models import Sequential
-from keras.layers import Dense, LSTM, SimpleRNN, GRU
+from keras.layers import Dense, LSTM, SimpleRNN, GRU, SpatialDropout1D, Dropout
 from keras.regularizers import l2
 from keras.constraints import max_norm
 
 
 def build_LSTM_model(length_array, num_features, num_units):
     model = Sequential([
+        SpatialDropout1D(0.2),
         LSTM(units=num_units, input_shape=(length_array, num_features), dropout=0.2, recurrent_dropout=0, activation='tanh',
              recurrent_activation='sigmoid', unroll=True, use_bias=True),
+        Dropout(0.5),
         # LSTM(units=196, dropout=0.2, recurrent_dropout=0.2),
         Dense(1, activation='sigmoid')
     ])

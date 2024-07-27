@@ -3,7 +3,7 @@ from sklearn.model_selection import KFold
 import numpy as np
 
 
-def epitope_dataset():
+def GetEpitopeDataset():
     file_path_train = './datasets/bepi3_epitopes_30.csv'
     file_path_eval = './datasets/bepi3_epitopes_eval.csv'
     df_train = pd.read_csv(file_path_train)
