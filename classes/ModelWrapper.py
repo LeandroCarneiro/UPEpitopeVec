@@ -9,11 +9,12 @@ import seaborn as sns
 
 
 class ModelWrapper:
-    def __init__(self, name, instance, prediction, scores):
+    def __init__(self, name, instance, prediction, scores, accuracy):
         self.name = name
         self.instance = instance
         self.prediction = prediction
         self.scores = scores
+        self.accuracy = accuracy
 
     def ConfusionMatrix(self, expected, show=False):
         disp = metrics.ConfusionMatrixDisplay.from_predictions(
@@ -23,23 +24,39 @@ class ModelWrapper:
         if (show):
             plt.show()
 
-    def Report(self, expected, predicted):
-        print(classification_report(expected, predicted, digits=4))
+    def Report(self, expected):
+        print(classification_report(expected, self.prediction, digits=4))
         print('-' * 50)
         print(f'\n')
 
-    def KappaHistogram(self, expected, predicted, show=False):
-        kappa_indices = np.array(cohen_kappa_score(expected, predicted))
+    def Histogram(self, expected, show=False):
+       # Initialize data list
+        data = []
 
-        # Plot histogram
-        plt.figure(figsize=(10, 6))
-        plt.hist(kappa_indices, bins='auto', density=True,
-                 alpha=0.7, color='blue', edgecolor='black')
+        kappa_indices = np.array(cohen_kappa_score(
+            expected, (self.prediction > 0.5).astype(int)))
 
-        plt.title('Histogram of Kappa Indices')
-        plt.xlabel('Kappa Index Value')
-        plt.ylabel('Frequency')
-        plt.grid(True)
+        # Append dictionaries to the list
+        data.append({"value": kappa_indices, "name": "Kappa"})
+        data.append({"value": self.accuracy, "name": "Accuracy"})
+
+        # Separate names and values for plotting
+        names = [item["name"] for item in data]
+        values = [item["value"] for item in data]
+
+        # Define colors for each bar (example colors)
+        colors = ['red', 'blue']  # Adjust as needed
+
+        # Create figure and axis objects
+        fig, ax = plt.subplots()
+
+        # Plot histogram/bar chart
+        ax.bar(names, values, color=colors)
+
+        # Set labels and title
+        ax.set_title('Comparison of Kappa and Accuracy')
+        ax.set_xlabel('Measurements')
+        ax.set_ylabel('Value')
 
         if (show):
             plt.show()
@@ -52,7 +69,7 @@ class ModelWrapper:
 
     def ReportCrossValidation(self):
         print(f'Cross Validation: {
-              np.mean(self.scores):.4f} (+/- {np.std(self.scores):.4f})')
+            np.mean(self.scores):.4f} (+/- {np.std(self.scores):.4f})')
 
     def ReportROC(self, expected, show=False):
         plt.figure()

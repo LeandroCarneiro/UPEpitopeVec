@@ -3,8 +3,15 @@ from sklearn.model_selection import KFold
 import numpy as np
 
 
+def GetEpitopes():
+    file_path_eval = './datasets/bepi3_epitopes.csv'
+    df_eval = pd.read_csv(file_path_eval)
+
+    return df_eval.loc[df_eval['PEPTIDE'].str.len() <= 30]
+
+
 def GetEpitopeDataset():
-    file_path_train = './datasets/bepi3_epitopes_30.csv'
+    file_path_train = './datasets/bepi3_epitopes_eval.csv'
     file_path_eval = './datasets/bepi3_epitopes_eval.csv'
     df_train = pd.read_csv(file_path_train)
     df_eval = pd.read_csv(file_path_eval)

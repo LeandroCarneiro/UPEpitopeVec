@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from helpers.DatasetReader import GetAllAminoacids
-from helpers.epitope_classifier import GetEpitopeDataset
+from helpers.epitope_classifier import GetEpitopeDataset, GetEpitopes
 from helpers.distance_calculator import calculate_distance, plot_heatmap
 from models.LeoModelsBuilder import build_MLP_embedder
 

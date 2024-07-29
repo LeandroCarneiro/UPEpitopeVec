@@ -1,6 +1,1 @@
-models/__pycache__/LeoLSTM.cpython-312.pyc
-helpers/__pycache__/AminoAcid.cpython-312.pyc
-helpers/__pycache__/DatasetReader.cpython-312.pyc
-helpers/__pycache__/epitope_classifier.cpython-312.pyc
-helpers/__pycache__/epitope_encoder.cpython-312.pyc
-classes/__pycache__/AminoAcid.cpython-312.pyc
+*.pyc
