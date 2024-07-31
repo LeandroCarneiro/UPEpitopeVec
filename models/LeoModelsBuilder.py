@@ -107,7 +107,7 @@ def build_MLP_model(length_array, num_features, num_units):
 
 def build_MLP_embedder(embed_size, size_vocabulary):
     model = Sequential([
-        Dense(embed_size, activation='linear'),
+        Dense(embed_size, activation='relu'),
         Dense(size_vocabulary, activation='softmax')
     ])
 

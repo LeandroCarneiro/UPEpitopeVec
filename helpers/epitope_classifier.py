@@ -16,7 +16,7 @@ def GetEpitopeDataset():
     df_train = pd.read_csv(file_path_train)
     df_eval = pd.read_csv(file_path_eval)
 
-    return df_train.loc[df_train['PEPTIDE'].str.len() <= 30],  df_eval.loc[df_eval['PEPTIDE'].str.len() <= 30]
+    return df_train.loc[df_train['PEPTIDE'].str.len() == 30],  df_eval.loc[df_eval['PEPTIDE'].str.len() == 30]
 
 
 def perform_k_fold_cross_validation(allSequences_train, y_train, n_splits, model):
